@@ -1,0 +1,39 @@
+$backgroundColor: #f5f5f5;
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: $backgroundColor;
+
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.appBody {
+  font-size: 24px;
+  display: flex;
+
+  margin: 20px;
+  gap: 92px;
+  div {
+    font-weight: 600;
+  }
+  span {
+    margin-left: 20px;
+    color: #b30000;
+    width: 98px;
+  }
+}
+.formresult {
+  display: flex;
+  height: 73vh;
+  // margin: auto;
+  gap: 90px;
+}
