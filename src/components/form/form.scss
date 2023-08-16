@@ -1,0 +1,92 @@
+$backgroundColor: #efefef;
+$radius: 40%;
+
+.formdiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  width: 60%;
+  //   height: 10vh;
+
+  p {
+    font-size: 20px;
+    margin: 40px 0;
+    color: #670000;
+    font-weight: 700;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    label {
+      display: flex;
+      margin: 1rem 0;
+      input {
+        width: 400px;
+        height: 6vh;
+        font-size: 18px;
+        border-radius: 7px 0 0 20px;
+        padding: 0 15px;
+      }
+      input::placeholder {
+        padding: 0 0px;
+        font-size: 17px;
+      }
+
+      span {
+        margin: auto 1em;
+        font-size: 24px;
+        font-weight: 700;
+        color: #670000;
+      }
+
+      button {
+        border-radius: 0 20px 7px 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: #670000;
+        border: 1px solid #670000;
+      }
+      button:hover {
+        background-color: #670000;
+        color: #efefef;
+      }
+    }
+  }
+
+  .selectMethod {
+    .methods {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 40px auto;
+      span {
+        border: none;
+        cursor: pointer;
+        margin-right: 1rem;
+        padding: 0.25rem 0.5rem;
+        background: #ccc;
+
+        &:hover,
+        &.active {
+          background: #fff;
+          background-color: #670000;
+          color: #efefef;
+        }
+      }
+    }
+
+    select {
+      width: 110px;
+      height: 6vh;
+    }
+
+    option {
+      // width:900px;
+      height: 90px;
+    }
+  }
+}
