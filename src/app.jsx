@@ -1,54 +1,69 @@
-import React from "react";
-
+import { useState } from "react";
+import axios from "axios";
 import "./app.scss";
 
-// Let's talk about using index.js and some other name in the component folder
-// There's pros and cons for each way of doing this ...
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Form from "./components/form";
 import Results from "./components/results";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
-      requestParams: {},
-    };
-  }
+function App() {
+  const [data, setData] = useState(null);
+  const [requestParams, setRequestParams] = useState({});
+  const [method, setMethod] = useState(null);
+  const [body, setBody] = useState(null);
 
-  callApi = (requestParams) => {
-    // mock output
-    const data = {
-      count: 2,
-      results: [
-        { name: "fake thing 1", url: "http://fakethings.com/1" },
-        { name: "fake thing 2", url: "http://fakethings.com/2" },
-      ],
-    };
-    this.setState({ data, requestParams });
+  const callApi = async (requestParams) => {
+    setMethod(requestParams.method);
+    
+    
+    let req = "";
+
+    switch (method) {
+      case "POST":
+        setBody(JSON.parse(requestParams.body));
+        console.log(body);
+
+        req = await axios.post(requestParams.url,body);
+        break;
+      case "DELETE":
+        req = await axios.delete(requestParams.url);
+        break;
+      case "PUT":
+        req = await axios.put(requestParams.url, requestParams.body);
+        break;
+      case "GET":
+        req = await axios.get(requestParams.url);
+        break;
+      default:
+        "GET";
+        req = await axios.get(requestParams.url);
+    }
+
+    setData(req.data);
+    setRequestParams(requestParams);
   };
 
-  render() {
-    return (
-      <React.Fragment>
-        <Header />
-        <section className="appBody">
-          <div>Request Method: <span>{this.state.requestParams.method}</span> </div>
-          <div>URL: <span>{this.state.requestParams.url}</span> </div>
-        </section>
+  return (
+    <>
+      <Header />
+      <section className='appBody'>
+        <div>
+          Request Method: <span>{requestParams.method}</span>
+        </div>
+        <div>
+          URL: <span>{requestParams.url}</span>
+        </div>
+      </section>
 
-        <section className="formresult">
+      <section className='formresult'>
+        <Form handleApiCall={callApi} />
+        <Results data={data} />
+      </section>
 
-        <Form handleApiCall={this.callApi} />
-        <Results data={this.state.data} />
-        </section>
-
-        <Footer />
-      </React.Fragment>
-    );
-  }
+      <Footer />
+    </>
+  );
 }
 
 export default App;

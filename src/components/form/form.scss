@@ -43,6 +43,8 @@ $radius: 40%;
         color: #670000;
       }
 
+      
+
       button {
         border-radius: 0 20px 7px 0;
         font-size: 16px;
@@ -76,6 +78,10 @@ $radius: 40%;
           background-color: #670000;
           color: #efefef;
         }
+      }
+      .active{
+        background-color: #efefef;
+        color: #670000;
       }
     }
 

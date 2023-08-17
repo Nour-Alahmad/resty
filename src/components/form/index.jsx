@@ -3,28 +3,60 @@ import "./form.scss";
 
 function Form(props) {
   const [url, setUrl] = useState("");
-  const [method, setMethod] = useState("GET");
+  const [reqBody, setReqBody] = useState("");
+  const [activeMethod, setActiveMethod] = useState('GET');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
-      method: method,
+      method: activeMethod, // Use activeMethod to determine the selected method
       url: url,
+      body: reqBody
     };
     props.handleApiCall(formData);
   };
 
   return (
-    <>
     <div className="formdiv">
-
-<p>◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈  ◈ ◈ ⁘ ◈ ⁘ ◈ ◈ ◈  ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈</p>
+      <p>◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ⁘ ◈ ⁘ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈</p>
+      <section className='selectMethod'>
+        <label className='methods'>
+          <span
+            className={activeMethod === 'GET' ? 'active' : ''}
+            onClick={() => setActiveMethod('GET')}
+            id='get'
+          >
+            GET
+          </span>
+          <span
+            className={activeMethod === 'POST' ? 'active' : ''}
+            onClick={() => setActiveMethod('POST')}
+            id='post'
+          >
+            POST
+          </span>
+          <span
+            className={activeMethod === 'PUT' ? 'active' : ''}
+            onClick={() => setActiveMethod('PUT')}
+            id='put'
+          >
+            PUT
+          </span>
+          <span
+            className={activeMethod === 'DELETE' ? 'active' : ''}
+            onClick={() => setActiveMethod('DELETE')}
+            id='delete'
+          >
+            DELETE
+          </span>
+        </label>
+      </section>
+      
       <form onSubmit={handleSubmit}>
-        
         <label>
           <span>URL: </span>
           <input
-          placeholder="Enter URL ...."
+            placeholder="Enter URL ...."
             name='url'
             type='text'
             value={url}
@@ -32,36 +64,18 @@ function Form(props) {
           />
           <button type='submit'>GO!</button>
         </label>
-      
-      </form>  
-      <section className='selectMethod'>
-          {/* <select
+      </form>
 
-            onChange={(e) => {
-              setMethod(e.target.value);
-              console.log(e.target.value);
-            }}>
-            <option value='GET'>GET</option>
-            <option value='POST'>POST</option>
-            <option value='PUT'>PUT</option>
-            <option value='DELETE'>DELETE</option>
-          </select> */}
-
-          <label className='methods'>
-          <span onClick={()=>setMethod('GET')} id='get'>GET</span>
-          <span onClick={()=>setMethod('POET')} id='post'>POST</span>
-          <span onClick={()=>setMethod('PUT')} id='put'>PUT</span>
-          <span onClick={()=>setMethod('DELET')} id='delete'>DELETE</span>
-        </label>
-        </section>
-
-<p>◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈  ◈ ◈ ⁘ ◈ ⁘ ◈ ◈ ◈  ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈</p>
-
-    
+      <p>◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ⁘ ◈ ⁘ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈ ◈</p>
+      <textarea
+        placeholder="Enter JSON Content"
+        onChange={(e) => setReqBody(e.target.value)}
+        name="reqBody"
+        id="reqBody"
+        cols="90"
+        rows="10"
+      ></textarea>
     </div>
-   
-     
-    </>
   );
 }
 
