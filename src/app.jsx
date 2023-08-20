@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./app.scss";
 
@@ -14,9 +14,9 @@ function App() {
   const [body, setBody] = useState(null);
 
   const callApi = async (requestParams) => {
-    setMethod(requestParams.method);
-    
-    
+    const reqMethod = requestParams.method; 
+  setMethod(reqMethod);
+
     let req = "";
 
     switch (method) {
@@ -43,6 +43,13 @@ function App() {
     setData(req.data);
     setRequestParams(requestParams);
   };
+
+  useEffect(() => {
+    
+      callApi(requestParams);
+ 
+  }, [requestParams.method, requestParams.url, requestParams.body]);
+
 
   return (
     <>
