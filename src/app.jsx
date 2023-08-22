@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 import "./app.scss";
 
@@ -7,24 +7,47 @@ import Footer from "./components/footer";
 import Form from "./components/form";
 import Results from "./components/results";
 
+// Define the initial state
+const initialState = {
+  data: null,
+  requestParams: {},
+  method: null,
+  body: null,
+  history: [],
+};
+
+// Define the reducer function
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setData":
+      return { ...state, data: action.payload };
+    case "setRequestParams":
+      return { ...state, requestParams: action.payload };
+    case "setMethod":
+      return { ...state, method: action.payload };
+    case "setBody":
+      return { ...state, body: action.payload };
+    case "addToHistory":
+      return { ...state, history: [...state.history, action.payload] };
+    default:
+      return state;
+  }
+};
+
 function App() {
-  const [data, setData] = useState(null);
-  const [requestParams, setRequestParams] = useState({});
-  const [method, setMethod] = useState(null);
-  const [body, setBody] = useState(null);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const callApi = async (requestParams) => {
-    const reqMethod = requestParams.method; 
-  setMethod(reqMethod);
+    const reqMethod = requestParams.method;
+    dispatch({ type: "setMethod", payload: reqMethod });
 
     let req = "";
 
-    switch (method) {
+    switch (reqMethod) {
       case "POST":
-        setBody(JSON.parse(requestParams.body));
-        console.log(body);
-
-        req = await axios.post(requestParams.url,body);
+      {  const parsedBody = JSON.parse(requestParams.body);
+        dispatch({ type: "setBody", payload: parsedBody });
+        req = await axios.post(requestParams.url, parsedBody);}
         break;
       case "DELETE":
         req = await axios.delete(requestParams.url);
@@ -35,37 +58,32 @@ function App() {
       case "GET":
         req = await axios.get(requestParams.url);
         break;
-      default:
-        "GET";
-        req = await axios.get(requestParams.url);
     }
 
-    setData(req.data);
-    setRequestParams(requestParams);
+    dispatch({ type: "setData", payload: req.data });
+    dispatch({ type: "setRequestParams", payload: requestParams });
+    dispatch({ type: "addToHistory", payload: { ...requestParams, results: req.data } });
   };
 
   useEffect(() => {
-    
-      callApi(requestParams);
- 
-  }, [requestParams.method, requestParams.url, requestParams.body]);
-
+    callApi(state.requestParams);
+  }, [state.requestParams.method, state.requestParams.url, state.requestParams.body]);
 
   return (
     <>
       <Header />
       <section className='appBody'>
         <div>
-          Request Method: <span>{requestParams.method}</span>
+          Request Method: <span>{state.requestParams.method}</span>
         </div>
         <div>
-          URL: <span>{requestParams.url}</span>
+          URL: <span>{state.requestParams.url}</span>
         </div>
       </section>
 
       <section className='formresult'>
         <Form handleApiCall={callApi} />
-        <Results data={data} />
+        <Results data={state.data} />
       </section>
 
       <Footer />
