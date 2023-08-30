@@ -9,11 +9,12 @@ function Form(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
-      method: activeMethod, // Use activeMethod to determine the selected method
+      method: activeMethod, 
       url: url,
       body: reqBody
     };
     props.handleApiCall(formData);
+    // console.log(formData)
   };
 
   return (
